@@ -1,0 +1,16 @@
+<form (ngSubmit)="addWord()">
+  <div class="input-field inline">
+    <input type="text" name="newWord" id="newWord" [(ngModel)]="newWord" />
+    <label for="newWord">Nouveau mot</label>
+  </div>
+  <span>
+    <button type="submit" class="btn blue darken-1">Ajouter</button>
+  </span>
+</form>
+
+<div class="row words-list">
+  <div class="col s4" *ngFor="let word of words">
+    {{word.label}}
+    <a href (click)="deleteWord($event, word)"><i class="material-icons left red-text text-lighten-1">delete</i></a>
+  </div>
+</div>

@@ -9,7 +9,7 @@
   <button (click)="readWord(textField)" class="btn blue"><i class="material-icons left">play_arrow</i>Réécouter</button>
   <button (click)="readExplanation()" class="btn blue" *ngIf="randomWord?.explain">Description</button>
 
-  <span class="right status z-depth-5 orange darken-3 white-text"><span>{{ validResponsesCount() }}</span> / {{ SESSION_ITEMS }}</span>
+  <span class="right status z-depth-5 orange darken-3 white-text"><span>{{ validResponsesCount() }}</span> / {{ getMaxWordsInSession() }}</span>
 
   <form (ngSubmit)="checkWordSpelling(textField)" #wordsForm="ngForm">
     <div class="row">

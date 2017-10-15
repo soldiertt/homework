@@ -1,5 +1,5 @@
 export default class Word {
-  id: string;
+  id?: string;
   label: string;
-  explain: string;
+  explain?: string;
 }

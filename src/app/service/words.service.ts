@@ -9,7 +9,7 @@ export class WordsService {
   wordCollection: AngularFirestoreCollection<Word>;
 
   constructor(private afs: AngularFirestore) {
-    this.wordCollection = this.afs.collection<Word>('words');
+    this.wordCollection = this.afs.collection<Word>('words', ref => ref.orderBy('label'));
   }
 
   findAll(): Observable<Word[]> {
@@ -22,8 +22,11 @@ export class WordsService {
     });
   }
 
-  create(word: Word): void {
-    this.wordCollection.add(word).then(resp => console.log(resp));
+  create(wordLabel: string): void {
+    this.wordCollection.add({label: wordLabel}).then(resp => console.log(resp));
   }
 
+  delete(word: Word): void {
+    this.wordCollection.doc(word.id).delete().then(resp => console.log('word deleted'));
+  }
 }

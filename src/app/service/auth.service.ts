@@ -30,4 +30,8 @@ export class AuthService {
   isAuthenticated(): boolean {
     return this.user !== undefined && this.user !== null;
   }
+
+  isAdmin(): boolean {
+    return this.isAuthenticated() && this.user.email === 'soldiertt@gmail.com';
+  }
 }

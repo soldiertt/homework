@@ -15,19 +15,33 @@ import {HomeComponent} from './components/home/home.component';
 import {AuthGuard} from './guard/auth.guard';
 import {WordsService} from './service/words.service';
 import {UsersService} from './service/users.service';
+import {WordsManagementComponent} from './components/admin/words-mgmt/words-mgmt.component';
+import {AdminComponent} from './components/admin/root/admin.component';
+import {AdminGuard} from './guard/admin.guard';
+import {ParamsService} from './service/params.service';
+import {ParamsManagementComponent} from './components/admin/params-mgmt/params-mgmt.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'words', component: WordsComponent, canActivate: [AuthGuard]},
+  {path: 'admin', component: AdminComponent, canActivate: [AdminGuard],
+    children: [
+      {path: 'words', component: WordsManagementComponent},
+      {path: 'params', component: ParamsManagementComponent}
+    ]
+  },
   { path: '**', component: HomeComponent }
 ];
 
 @NgModule({
   declarations: [
+    AdminComponent,
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    WordsComponent
+    ParamsManagementComponent,
+    WordsComponent,
+    WordsManagementComponent
   ],
   imports: [
     AngularFireAuthModule,
@@ -38,8 +52,10 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes)
   ],
   providers: [
+    AdminGuard,
     AuthGuard,
     AuthService,
+    ParamsService,
     UsersService,
     WordsService
   ],

@@ -3,6 +3,7 @@ import Word from '../../model/word.class';
 import WordTry from '../../model/word-try.class';
 import {WordsService} from '../../service/words.service';
 import {UsersService} from '../../service/users.service';
+import {ParamsService} from '../../service/params.service';
 
 declare var $: any;
 
@@ -12,8 +13,6 @@ declare var $: any;
 })
 export class WordsComponent {
 
-  readonly SESSION_ITEMS: number = 5;
-  readonly REWRITE_IF_FAILURE_COUNT: number = 2;
   words: Word[];
   previousWord: Word;
   randomWord: Word;
@@ -23,7 +22,7 @@ export class WordsComponent {
   speechSynthesis: SpeechSynthesisUtterance;
   session: WordTry[] = [];
 
-  constructor(private wordsService: WordsService, private usersService: UsersService) {
+  constructor(private wordsService: WordsService, private usersService: UsersService, private paramsService: ParamsService) {
     this.wordsService.findAll().subscribe(words => {
       this.words = words;
     });
@@ -88,14 +87,14 @@ export class WordsComponent {
   }
 
   private selectRandomWord(): void {
-    if (this.session.length === this.SESSION_ITEMS) {
+    if (this.session.length === this.getMaxWordsInSession()) {
       this.randomWord = this.session[Math.floor(Math.random() * this.session.length)].word;
     } else {
       this.randomWord = this.words[Math.floor(Math.random() * this.words.length)];
     }
     if (this.session.some(trial => {
         return this.randomWord.id === trial.word.id && ((trial.successCount >= 1 && trial.failureCount === 0)
-          || trial.successCount >= this.REWRITE_IF_FAILURE_COUNT);
+          || trial.successCount >= this.paramsService.REWRITE_IF_FAILURE_COUNT);
       })) {
       this.selectRandomWord();
     } else {
@@ -104,12 +103,16 @@ export class WordsComponent {
   }
 
   private checkSessionEnded(): boolean {
-    return this.validResponsesCount() >= this.SESSION_ITEMS;
+    return this.validResponsesCount() >= this.getMaxWordsInSession();
   }
 
   validResponsesCount(): number {
     return this.session.filter(trial => {
-      return (trial.successCount >= 1 && trial.failureCount === 0) || trial.successCount >= this.REWRITE_IF_FAILURE_COUNT;
+      return (trial.successCount >= 1 && trial.failureCount === 0) || trial.successCount >= this.paramsService.REWRITE_IF_FAILURE_COUNT;
     }).length;
+  }
+
+  getMaxWordsInSession(): number {
+    return this.paramsService.MAX_WORDS_IN_SESSION;
   }
 }
