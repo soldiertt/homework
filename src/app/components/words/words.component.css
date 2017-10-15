@@ -1,0 +1,93 @@
+/******************/
+/** STATUS X / y **/
+/******************/
+.status {
+  font-weight: bold;
+  font-size: 1.5em;
+  padding: 5px 10px;
+}
+
+.status span {
+  font-size: 1.5em;
+}
+
+/******************/
+/**** TEXTFIELD ***/
+/******************/
+
+.input-field input[type=text]:not(.browser-default) {
+  margin-top: 30px;
+  font-size: 80px;
+  height: 6.7rem;
+  font-family: myCursive;
+  text-indent: 10px;
+}
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+  color: #2196f3;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #2196f3;
+  box-shadow: 0 1px 0 0 #1565c0;
+}
+
+/******************/
+/***** ANSWER *****/
+/******************/
+
+.answer {
+  margin-top: 10px;
+}
+
+.answer label, .answer i {
+  font-size: 100px;
+}
+
+.answer label {
+  display: block;
+  line-height: 1.5;
+  color: black;
+  font-family: myCursive;
+}
+
+.answer-content {
+  padding: 20px;
+  display: none;
+}
+
+/******************/
+/***** BUTTONS ****/
+/******************/
+
+.btn-large {
+  font-size: 40px;
+  height: 60px;
+}
+
+.btn-large i {
+  font-size: 60px;
+}
+
+.btn-submit {
+  margin-top: 60px;
+}
+
+/******************/
+/**** CONGRAATS ***/
+/******************/
+
+.congrat {
+  font-size: 100px;
+  margin: 10px 0 10px 0;
+}
+
+.congrat i {
+  font-size: 100px;
+}
+
+.congrat p {
+  margin: 0;
+}
+

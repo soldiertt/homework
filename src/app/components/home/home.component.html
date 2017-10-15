@@ -1,0 +1,15 @@
+<h1>Bienvenue sur Homework !</h1>
+
+<div *ngIf="!isAuth()">
+  <h2>Merci de bien vouloir vous identifiez !</h2>
+  <p>
+    <button class="btn" (click)="login()">Connexion</button>
+  </p>
+</div>
+
+<div *ngIf="isAuth()">
+  <p>Veuillez choisir votre activité parmis celles proposées ci-dessous.</p>
+  <p>
+    <button class="btn" routerLink="/words">Les mots à écrire</button>
+  </p>
+</div>
