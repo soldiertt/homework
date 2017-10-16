@@ -3,7 +3,7 @@ import {AngularFireAuth} from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import {Router} from '@angular/router';
 import User from '../model/user.class';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 import {AngularFirestore, AngularFirestoreDocument} from 'angularfire2/firestore';
 
 @Injectable()
