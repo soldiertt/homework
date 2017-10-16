@@ -13,10 +13,10 @@
 
   <form (ngSubmit)="checkWordSpelling(textField)" #wordsForm="ngForm">
     <div class="row">
-      <div class="col s8 input-field">
+      <div class="col s12 m6 l8 input-field">
         <input id="input-label" type="text" name="word" [(ngModel)]="inputLabel" autofocus required autocomplete="off" #textField />
       </div>
-      <div class="col s4">
+      <div class="col s12 m6 l4">
         <button type="submit" name="submit" class="btn btn-large btn-submit orange darken-3 white-text" [class.disabled]="!wordsForm.valid">
           <i class="material-icons left">done</i>
           Valider

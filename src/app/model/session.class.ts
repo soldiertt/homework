@@ -1,6 +1,6 @@
 import WordTry from './word-try.class';
 
 export default class Session {
-  endDate: string;
+  endDate: Date;
   trials: WordTry[];
 }

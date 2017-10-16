@@ -1,15 +1,18 @@
 <h1>Bienvenue sur Homework !</h1>
 
-<div *ngIf="!isAuth()">
-  <h2>Merci de bien vouloir vous identifiez !</h2>
-  <p>
-    <button class="btn blue darken-1" (click)="login()">Connexion</button>
-  </p>
+<div *ngIf="(auth.user | async); else guest">
+  <div>
+    <p>Veuillez choisir votre activité parmis celles proposées ci-dessous.</p>
+    <p>
+      <button class="btn blue darken-1" routerLink="/words">Les mots à écrire</button>
+    </p>
+  </div>
+
 </div>
 
-<div *ngIf="isAuth()">
-  <p>Veuillez choisir votre activité parmis celles proposées ci-dessous.</p>
+<ng-template #guest>
+  <h2>Merci de bien vouloir vous identifiez !</h2>
   <p>
-    <button class="btn blue darken-1" routerLink="/words">Les mots à écrire</button>
+    <button class="btn blue darken-1" (click)="auth.login()">Connexion</button>
   </p>
-</div>
+</ng-template>

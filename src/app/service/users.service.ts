@@ -1,43 +1,24 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firestore';
-import User from '../model/user.class';
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import Session from '../model/session.class';
 import WordTry from '../model/word-try.class';
-import * as moment from 'moment';
-import {AngularFireAuth} from 'angularfire2/auth';
-import * as firebase from 'firebase';
+import {Observable} from 'rxjs/Observable';
+import User from '../model/user.class';
+import {AuthService} from './auth.service';
 
 @Injectable()
 export class UsersService {
 
-  user: firebase.User;
   userCollection: AngularFirestoreCollection<User>;
-  userDocId: string;
+  user: User;
 
-  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore, private auth: AuthService) {
     this.userCollection = this.afs.collection<User>('users');
-    this.afAuth.authState.subscribe(user => {
-      this.user = user;
-      this.initUser();
-    });
+    this.auth.user.subscribe(user => this.user = user);
   }
 
-  initUser(): void {
-    this.afs.collection<User>('users', ref => {
-      return ref.where('authId', '==', this.user.uid);
-    }).snapshotChanges().map(users => {
-      return users.map(user => user.payload.doc.id);
-    }).subscribe(ids => {
-      if (ids.length === 0) {
-        this.create({authId: this.user.uid});
-      } else {
-        this.userDocId = ids[0];
-      }
-    });
-  }
-
-  private create(user: any): void {
-    this.userCollection.add(user).then(resp => this.userDocId = resp.id);
+  findAll(): Observable<User[]> {
+    return this.userCollection.valueChanges();
   }
 
   addUserSession(trials: WordTry[]): void {
@@ -45,8 +26,16 @@ export class UsersService {
     trials.forEach(trial => {
       newTrials.push({word: trial.word, successCount: trial.successCount, failureCount: trial.failureCount});
     });
-    const session = {endDate: moment().format('DD-MM-YYYY HH:mm:ss'), trials: newTrials};
-    const userDoc = this.userCollection.doc(this.userDocId);
+    const session = {endDate: new Date(), trials: newTrials};
+    console.log(this.user.uid);
+    const userDoc = this.userCollection.doc(this.user.uid);
     userDoc.collection<Session>('sessions').add(session).then(resp => console.log('update ok'));
+  }
+
+  loadSessionsFromUser(findUser: User): Observable<Session[]> {
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${findUser.uid}`);
+    return userRef.collection<Session>('sessions', ref => {
+      return ref.orderBy('endDate', 'desc');
+    }).valueChanges();
   }
 }

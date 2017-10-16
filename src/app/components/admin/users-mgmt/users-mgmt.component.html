@@ -1,0 +1,30 @@
+<div class="users-list">
+  <div *ngFor="let user of users">
+    <span [class.active]="isSelected(user)"><a href (click)="loadUser($event, user)">{{user.displayName}}</a></span>
+  </div>
+  <div *ngIf="sessions">
+    <ul class="collapsible popout" data-collapsible="accordion">
+      <li *ngFor="let session of sessions">
+        <div class="collapsible-header">{{session.endDate | date : 'dd-MM-yyyy HH:mm'}}</div>
+        <div class="collapsible-body">
+          <table class="striped centered">
+            <thead>
+              <tr>
+                <th>Mot</th>
+                <th>Success</th>
+                <th>Echecs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let trial of session.trials">
+                <td>{{trial.word.label}}</td>
+                <td>{{trial.successCount}}</td>
+                <td>{{trial.failureCount}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

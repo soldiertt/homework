@@ -8,28 +8,6 @@ import {AuthService} from '../../service/auth.service';
 })
 export class HeaderComponent {
 
-  constructor(private authService: AuthService) {}
-
-  login($event) {
-    $event.preventDefault();
-    this.authService.login();
-  }
-
-  logout($event) {
-    $event.preventDefault();
-    this.authService.logout();
-  }
-
-  isAuth() {
-    return this.authService.isAuthenticated();
-  }
-
-  isAdmin() {
-    return this.authService.isAdmin();
-  }
-
-  getUser() {
-    return this.authService.user;
-  }
+  constructor(public auth: AuthService) {}
 
 }

@@ -6,14 +6,7 @@ import {AuthService} from '../../service/auth.service';
 })
 export class HomeComponent {
 
-  constructor(private authService: AuthService) {}
+  constructor(public auth: AuthService) {}
 
-  isAuth(): boolean {
-    return this.authService.isAuthenticated();
-  }
-
-  login() {
-    this.authService.login();
-  }
 
 }

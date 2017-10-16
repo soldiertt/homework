@@ -1,0 +1,21 @@
+.users-list {
+  padding: 20px;
+}
+
+span.active {
+  font-weight: bold;
+}
+
+td {
+  padding: 5px;
+}
+
+.collapsible-header {
+  font-weight: bold;
+  font-size: 1.3em;
+  padding: 5px;
+}
+
+.collapsible-body {
+  padding: 5px;
+}

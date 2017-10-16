@@ -20,6 +20,7 @@ import {AdminComponent} from './components/admin/root/admin.component';
 import {AdminGuard} from './guard/admin.guard';
 import {ParamsService} from './service/params.service';
 import {ParamsManagementComponent} from './components/admin/params-mgmt/params-mgmt.component';
+import {UsersManagementComponent} from './components/admin/users-mgmt/users-mgmt.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -27,7 +28,8 @@ const appRoutes: Routes = [
   {path: 'admin', component: AdminComponent, canActivate: [AdminGuard],
     children: [
       {path: 'words', component: WordsManagementComponent},
-      {path: 'params', component: ParamsManagementComponent}
+      {path: 'params', component: ParamsManagementComponent},
+      {path: 'users', component: UsersManagementComponent}
     ]
   },
   { path: '**', component: HomeComponent }
@@ -40,6 +42,7 @@ const appRoutes: Routes = [
     HeaderComponent,
     HomeComponent,
     ParamsManagementComponent,
+    UsersManagementComponent,
     WordsComponent,
     WordsManagementComponent
   ],

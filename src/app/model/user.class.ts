@@ -1,3 +1,5 @@
 export default class User {
-  authId: string;
+  uid: string;
+  email: string;
+  displayName?: string;
 }

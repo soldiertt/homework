@@ -2,10 +2,14 @@
   <div class="nav-wrapper">
     <a href routerLink="" class="brand-logo"><img src="assets/images/homework.png" /></a>
     <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li class="static-info" *ngIf="isAuth()">{{getUser().displayName}} ({{getUser().email}})</li>
-      <li routerLinkActive="active"><a href routerLink="/admin" *ngIf="isAdmin()">Administration</a></li>
-      <li><a href (click)="login($event)" *ngIf="!isAuth()">Connexion</a></li>
-      <li><a href (click)="logout($event)" *ngIf="isAuth()">Déconnexion</a></li>
+      <ng-container *ngIf="auth.user | async as user; else guest">
+        <li class="static-info">{{user.displayName}} ({{user.email}})</li>
+        <li routerLinkActive="active"><a href routerLink="/admin" *ngIf="auth.isAdmin">Administration</a></li>
+        <li><a href (click)="auth.logout(); false">Déconnexion</a></li>
+      </ng-container>
+      <ng-template #guest>
+        <li><a href (click)="auth.login(); false">Connexion</a></li>
+      </ng-template>
     </ul>
   </div>
 </nav>
