@@ -11,6 +11,11 @@
   font-size: 1.5em;
 }
 
+.progress {
+  height: 7px;
+  margin-top: 35px;
+}
+
 /******************/
 /**** TEXTFIELD ***/
 /******************/

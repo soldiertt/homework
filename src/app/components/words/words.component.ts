@@ -21,6 +21,8 @@ export class WordsComponent {
   sessionEnded: boolean;
   speechSynthesis: SpeechSynthesisUtterance;
   session: WordTry[] = [];
+  audioApplause: HTMLAudioElement;
+  audioBoo: HTMLAudioElement;
 
   constructor(private wordsService: WordsService, private usersService: UsersService, private paramsService: ParamsService) {
     this.wordsService.findAll().subscribe(words => {
@@ -29,6 +31,10 @@ export class WordsComponent {
     this.speechSynthesis = new SpeechSynthesisUtterance();
     const voices = window.speechSynthesis.getVoices();
     this.speechSynthesis.voice = voices[0];
+    this.audioApplause = new Audio('assets/audio/applause.mp3');
+    this.audioApplause.volume = .1;
+    this.audioBoo = new Audio('assets/audio/boo.mp3');
+    this.audioBoo.volume = .1;
   }
 
   startSession() {
@@ -55,6 +61,7 @@ export class WordsComponent {
     $('#answer-ko').stop().hide();
     const wordIndex = this.session.map(trial => trial.word.id).indexOf(this.randomWord.id);
     if (this.inputLabel.trim().toLowerCase() === this.randomWord.label) {
+      this.audioApplause.play();
       $('#answer-ok').slideDown(1000).delay(6000).slideUp();
       if (wordIndex !== -1) {
         this.session[wordIndex].successCount++;
@@ -62,6 +69,7 @@ export class WordsComponent {
         this.session.push(new WordTry(this.randomWord, 1, 0));
       }
     } else {
+      this.audioBoo.play();
       $('#answer-ko').slideDown(1000).delay(6000).slideUp();
       if (wordIndex !== -1) {
         this.session[wordIndex].failureCount++;
@@ -114,5 +122,9 @@ export class WordsComponent {
 
   getMaxWordsInSession(): number {
     return this.paramsService.MAX_WORDS_IN_SESSION;
+  }
+
+  completionPercentage(): string {
+    return (this.validResponsesCount() / this.getMaxWordsInSession() * 100 ) + '%';
   }
 }

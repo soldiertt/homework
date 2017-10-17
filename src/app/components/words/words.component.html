@@ -3,13 +3,15 @@
   <p>FÉLICITATIONS !!!</p>
 </div>
 
-<button (click)="startSession()" class="btn btn-large orange darken-3" *ngIf="!sessionStarted"><i class="material-icons left">play_arrow</i>START SESSION</button>
+<button (click)="startSession()" class="btn btn-large orange darken-3" *ngIf="!sessionStarted"><i class="material-icons left">play_arrow</i>DÉMARRER</button>
 
 <div *ngIf="sessionStarted">
   <button (click)="readWord(textField)" class="btn blue"><i class="material-icons left">play_arrow</i>Réécouter</button>
   <button (click)="readExplanation()" class="btn ornage darken-1 white-text" *ngIf="randomWord?.explain"><i class="material-icons left">warning</i>Description</button>
-
   <span class="right status z-depth-5 orange darken-3 white-text"><span>{{ validResponsesCount() }}</span> / {{ getMaxWordsInSession() }}</span>
+  <div class="progress orange lighten-4">
+    <div class="determinate orange darken-3" [style.width]="completionPercentage()"></div>
+  </div>
 
   <form (ngSubmit)="checkWordSpelling(textField)" #wordsForm="ngForm">
     <div class="row">
@@ -17,7 +19,7 @@
         <input id="input-label" type="text" name="word" [(ngModel)]="inputLabel" autofocus required autocomplete="off" #textField />
       </div>
       <div class="col s12 m6 l4">
-        <button type="submit" name="submit" class="btn btn-large btn-submit orange darken-3 white-text" [disabled]="!wordsForm.valid">
+        <button type="submit" name="submit" class="btn btn-large btn-submit blue white-text" [disabled]="!wordsForm.valid">
           <i class="material-icons left">done</i>
           Valider
         </button>
