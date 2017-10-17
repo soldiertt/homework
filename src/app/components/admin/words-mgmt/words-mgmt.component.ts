@@ -21,6 +21,9 @@ export class WordsManagementComponent {
   }
 
   addWord() {
-    this.wordsService.create(this.newWord);
+    if (this.newWord.trim() !== '') {
+      this.wordsService.create(this.newWord.trim());
+      this.newWord = '';
+    }
   }
 }

@@ -1,10 +1,10 @@
-<form (ngSubmit)="addWord()">
+<form (ngSubmit)="addWord()" #addWordForm="ngForm">
   <div class="input-field inline">
-    <input type="text" name="newWord" id="newWord" [(ngModel)]="newWord" />
+    <input type="text" name="newWord" id="newWord" [(ngModel)]="newWord" required />
     <label for="newWord">Nouveau mot</label>
   </div>
   <span>
-    <button type="submit" class="btn blue darken-1">Ajouter</button>
+    <button type="submit" class="btn blue darken-1" [disabled]="!addWordForm.valid">Ajouter</button>
   </span>
 </form>
 
