@@ -1,5 +1,5 @@
 <div *ngIf="sessionEnded" class="congrat card-panel green darken-1 white-text center-align">
-  <i class="material-icons">cake</i>
+  <i class="material-icons">card_giftcard</i>
   <p>FÉLICITATIONS !!!</p>
 </div>
 
@@ -7,7 +7,7 @@
 
 <div *ngIf="sessionStarted">
   <button (click)="readWord(textField)" class="btn blue"><i class="material-icons left">play_arrow</i>Réécouter</button>
-  <button (click)="readExplanation()" class="btn ornage darken-1 white-text" *ngIf="randomWord?.explain"><i class="material-icons left">warning</i>Description</button>
+  <button (click)="readExplanation(textField)" class="btn ornage darken-1 white-text" *ngIf="randomWord?.explain"><i class="material-icons left">warning</i>Description</button>
   <span class="right status z-depth-5 orange darken-3 white-text"><span>{{ validResponsesCount() }}</span> / {{ getMaxWordsInSession() }}</span>
   <div class="progress orange lighten-4">
     <div class="determinate orange darken-3" [style.width]="completionPercentage()"></div>

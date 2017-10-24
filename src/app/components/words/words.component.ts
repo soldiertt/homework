@@ -51,9 +51,10 @@ export class WordsComponent {
     }
   }
 
-  readExplanation() {
+  readExplanation(textField) {
     this.speechSynthesis.text = this.randomWord.explain;
     speechSynthesis.speak(this.speechSynthesis);
+    textField.focus();
   }
 
   checkWordSpelling(textField): void {

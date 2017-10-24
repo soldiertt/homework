@@ -3,6 +3,10 @@
     <input type="text" name="newWord" id="newWord" [(ngModel)]="newWord" required />
     <label for="newWord">Nouveau mot</label>
   </div>
+  <div class="input-field inline">
+    <input type="text" name="newWordDescription" id="newWordDescription" [(ngModel)]="newWordDescription" />
+    <label for="newWord">Phrase de contexte</label>
+  </div>
   <span>
     <button type="submit" class="btn blue darken-1" [disabled]="!addWordForm.valid">Ajouter</button>
   </span>
@@ -10,7 +14,11 @@
 
 <div class="row words-list">
   <div class="col s4" *ngFor="let word of words">
-    {{word.label}}
     <a href (click)="deleteWord($event, word)"><i class="material-icons left red-text text-lighten-1">delete</i></a>
+    {{word.label}}
+    <span *ngIf="word.explain">
+      <i class="material-icons tooltipped" data-position="bottom"
+                                  data-delay="50" [attr.data-tooltip]="word.explain">info</i>
+    </span>
   </div>
 </div>

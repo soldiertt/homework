@@ -1,5 +1,13 @@
+#newWordDescription {
+  min-width: 400px;
+}
+
 .words-list .col {
   border-bottom: 1px solid #ccc;
   min-height: 25px;
   margin-bottom: 10px;
+}
+
+.tooltipped {
+  font-size: 18px;
 }

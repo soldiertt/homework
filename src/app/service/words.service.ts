@@ -22,8 +22,14 @@ export class WordsService {
     });
   }
 
-  create(wordLabel: string): void {
-    this.wordCollection.add({label: wordLabel}).then(resp => console.log(resp));
+  create(wordLabel: string, wordDescription?: string): void {
+    let newWord;
+    if (wordDescription) {
+      newWord = {label: wordLabel, explain: wordDescription};
+    } else {
+      newWord = {label: wordLabel};
+    }
+    this.wordCollection.add(newWord).then(resp => console.log(resp));
   }
 
   delete(word: Word): void {
