@@ -11,3 +11,8 @@
 .tooltipped {
   font-size: 18px;
 }
+
+.clickable {
+  cursor: pointer;
+  font-size: 18px;
+}

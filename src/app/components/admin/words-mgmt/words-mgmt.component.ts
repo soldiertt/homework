@@ -13,6 +13,7 @@ export class WordsManagementComponent {
   words: Word[];
   newWord: string;
   newWordDescription: string;
+  speechSynthesis: SpeechSynthesisUtterance;
 
   constructor(private wordsService: WordsService) {
     this.wordsService.findAll().subscribe(words => {
@@ -21,6 +22,9 @@ export class WordsManagementComponent {
           jQuery('.tooltipped').tooltip({delay: 50});
       }, 50);
     });
+    this.speechSynthesis = new SpeechSynthesisUtterance();
+    const voices = window.speechSynthesis.getVoices();
+    this.speechSynthesis.voice = voices[0];
   }
 
   deleteWord($event, word: Word): void {
@@ -34,5 +38,10 @@ export class WordsManagementComponent {
       this.newWord = '';
       this.newWordDescription = undefined;
     }
+  }
+
+  read(text: string) {
+    this.speechSynthesis.text = text;
+    speechSynthesis.speak(this.speechSynthesis);
   }
 }

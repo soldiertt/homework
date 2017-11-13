@@ -16,7 +16,11 @@
   <div class="col s4" *ngFor="let word of words">
     <a href (click)="deleteWord($event, word)"><i class="material-icons left red-text text-lighten-1">delete</i></a>
     {{word.label}}
+    <span>
+      <i class="material-icons clickable" (click)="read(word.label)">play_arrow</i>
+    </span>
     <span *ngIf="word.explain">
+      <i class="material-icons clickable" (click)="read(word.explain)">play_circle_outline</i>
       <i class="material-icons tooltipped" data-position="bottom"
                                   data-delay="50" [attr.data-tooltip]="word.explain">info</i>
     </span>

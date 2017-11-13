@@ -16,7 +16,7 @@
   <form (ngSubmit)="checkWordSpelling(textField)" #wordsForm="ngForm">
     <div class="row">
       <div class="col s12 m6 l8 input-field">
-        <input id="input-label" type="text" name="word" [(ngModel)]="inputLabel" autofocus required autocomplete="off" #textField />
+        <input id="input-label" type="text" name="word" [(ngModel)]="inputLabel" spellcheck="false" autofocus required autocomplete="off" #textField />
       </div>
       <div class="col s12 m6 l4">
         <button type="submit" name="submit" class="btn btn-large btn-submit blue white-text" [disabled]="!wordsForm.valid">
