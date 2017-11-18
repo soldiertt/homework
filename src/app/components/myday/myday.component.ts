@@ -34,6 +34,8 @@ export class MyDayComponent implements OnInit, OnDestroy {
     this.form.addControl('teeth', this.fb.control(false));
     this.form.addControl('drink', this.fb.control(false));
     this.form.addControl('sleep', this.fb.control(false));
+
+    this.dayMaxScore = Object.keys(this.form.controls).length;
   }
 
   ngOnInit() {
@@ -43,21 +45,22 @@ export class MyDayComponent implements OnInit, OnDestroy {
       .mergeMap(userId => this.userService.loadDayItemFromUser(userId))
       .takeUntil(this.ngUnsubscribe)
       .subscribe(dayItem => {
-        this.dayItem = dayItem;
-        this.score = dayItem.score;
+        if (dayItem) {
+          this.dayItem = dayItem;
+          this.score = dayItem.score;
 
-        const options = {emitEvent: false};
+          const options = {emitEvent: false};
+          this.form.get('daybook').setValue(this._checked('daybook'), options);
+          this.form.get('shower').setValue(this._checked('shower'), options);
+          this.form.get('homework').setValue(this._checked('homework'), options);
+          this.form.get('words').setValue(this._checked('words'), options);
+          this.form.get('teeth').setValue(this._checked('teeth'), options);
+          this.form.get('drink').setValue(this._checked('drink'), options);
+          this.form.get('sleep').setValue(this._checked('sleep'), options);
+        }
 
-        this.form.get('daybook').setValue(this._checked('daybook'), options);
-        this.form.get('shower').setValue(this._checked('shower'), options);
-        this.form.get('homework').setValue(this._checked('homework'), options);
-        this.form.get('words').setValue(this._checked('words'), options);
-        this.form.get('teeth').setValue(this._checked('teeth'), options);
-        this.form.get('drink').setValue(this._checked('drink'), options);
-        this.form.get('sleep').setValue(this._checked('sleep'), options);
-
-        this.dayMaxScore = Object.keys(this.form.controls).length;
         this.checkIfHappy();
+
         this.userService.totalUserPoints(this.userId)
           .takeUntil(this.ngUnsubscribe)
           .subscribe(total => this.total = total);
