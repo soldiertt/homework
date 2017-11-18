@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col s6">
+    <form [formGroup]="form" *ngIf="total">
+      <p>
+        <label for="daybook">
+          <input type="checkbox" id="daybook" formControlName="daybook" />
+          <span>Journal de classe sur la table.</span>
+        </label>
+      </p>
+      <p>
+        <label for="shower">
+          <input type="checkbox" id="shower" formControlName="shower" />
+          <span>Prendre ma douche.</span>
+        </label>
+      </p>
+      <p>
+        <label for="homework">
+          <input type="checkbox" id="homework" formControlName="homework" />
+          <span>Faire mes devoirs.</span>
+        </label>
+      </p>
+      <p>
+        <label for="words">
+          <input type="checkbox" id="words" formControlName="words" />
+          <span>Faire une liste de mots.</span>
+        </label>
+      </p>
+      <p>
+        <label for="teeth">
+          <input type="checkbox" id="teeth" formControlName="teeth" />
+          <span>Laver mes dents.</span>
+        </label>
+      </p>
+      <p>
+        <label for="drink">
+          <input type="checkbox" id="drink" formControlName="drink" />
+          <span>Boire un grand verre d'eau.</span>
+        </label>
+      </p>
+      <p>
+        <label for="sleep">
+          <input type="checkbox" id="sleep" formControlName="sleep" />
+          <span>Aller me coucher avant 20h15.</span>
+        </label>
+      </p>
+    </form>
+  </div>
+  <div class="col s6">
+    <div class="today">
+      {{clock | async | date:'dd MMMM yyyy'}}
+    </div>
+    <div class="now">
+      {{clock | async | date:'HH:mm:ss'}}
+    </div>
+    <div class="row">
+      <div class="col s3">
+        <div class="status z-depth-5 orange darken-3 white-text">
+          <span>{{score}}</span> / {{dayMaxScore}}
+        </div>
+      </div>
+      <div class="col s3">
+        <div class="happy z-depth-5 green white-text" *ngIf="happy">
+          <i class="material-icons">mood</i>
+        </div>
+      </div>
+    </div>
+    <div class="total z-depth-5 blue darken-3 white-text">
+      Total : <span>{{total}}</span>
+    </div>
+  </div>
+</div>

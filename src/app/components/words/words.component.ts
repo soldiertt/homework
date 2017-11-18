@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import Word from '../../model/word.class';
 import WordTry from '../../model/word-try.class';
 import {WordsService} from '../../service/words.service';
@@ -11,7 +11,7 @@ declare var $: any;
   templateUrl: './words.component.html',
   styleUrls: ['./words.component.css']
 })
-export class WordsComponent {
+export class WordsComponent implements OnInit {
 
   words: Word[];
   previousWord: Word;
@@ -23,6 +23,7 @@ export class WordsComponent {
   session: WordTry[] = [];
   audioApplause: HTMLAudioElement;
   audioBoo: HTMLAudioElement;
+  userId: string;
 
   constructor(private wordsService: WordsService, private usersService: UsersService, private paramsService: ParamsService) {
     this.wordsService.findAll().subscribe(words => {
@@ -35,6 +36,12 @@ export class WordsComponent {
     this.audioApplause.volume = .1;
     this.audioBoo = new Audio('assets/audio/boo.mp3');
     this.audioBoo.volume = .1;
+  }
+
+  ngOnInit() {
+    this.usersService.currentUser()
+      .map(user => user.uid)
+      .do(userId => this.userId = userId).subscribe();
   }
 
   startSession() {
@@ -88,7 +95,7 @@ export class WordsComponent {
         textField.focus();
       }, 3000);
     } else {
-      this.usersService.addUserSession(this.session);
+      this.usersService.addUserSession(this.userId, this.session);
       this.sessionStarted = false;
       this.session = [];
       this.previousWord = undefined;

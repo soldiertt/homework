@@ -1,0 +1,40 @@
+.today {
+  font-size: 2em;
+}
+
+.now {
+  font-family: Orbitron;
+  font-weight: bold;
+  font-size: 3em;
+}
+/******************/
+/** STATUS X / y **/
+/******************/
+.status {
+  font-weight: bold;
+  font-size: 1.5em;
+  padding: 5px 10px;
+}
+
+.status span {
+  font-size: 1.5em;
+}
+
+.happy {
+  width: 75px;
+  padding: 10px 0 5px 0;
+  text-align: center;
+}
+.happy .material-icons {
+  font-size: 3em;
+}
+
+.total {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 1.5em;
+}
+
+.total span {
+  font-size: 2em;
+}
