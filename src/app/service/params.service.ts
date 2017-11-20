@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import Word from '../model/word.class';
-import {AngularFirestore, AngularFirestoreCollection} from 'angularfire2/firestore';
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import Param from '../model/param.class';
+import DailyTask from '../model/daily-task';
 
 @Injectable()
 export class ParamsService {
@@ -25,6 +25,13 @@ export class ParamsService {
         }
       });
     });
+  }
+
+  findDailyTasks(): Observable<DailyTask[]> {
+    const dayItemsParamRef: AngularFirestoreDocument<Param> = this.afs.doc('params/day_items');
+    return dayItemsParamRef.collection<DailyTask>('tasks', ref => {
+      return ref.orderBy('order', 'asc');
+    }).valueChanges();
   }
 
   findAll(): Observable<Param[]> {

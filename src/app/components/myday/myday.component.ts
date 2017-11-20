@@ -6,6 +6,8 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {UsersService} from '../../service/users.service';
 import DayItem from '../../model/day-item.class';
 import {Subject} from 'rxjs/Subject';
+import {ParamsService} from '../../service/params.service';
+import DailyTask from '../../model/daily-task';
 
 @Component({
   templateUrl: './myday.component.html',
@@ -19,26 +21,27 @@ export class MyDayComponent implements OnInit, OnDestroy {
   clock: Observable<Date>;
   dayItem: DayItem;
   form: FormGroup;
-  dayMaxScore: number;
   score: number = 0;
-  happy: boolean = false;
   total: number;
+  dailyTasks: DailyTask[];
 
   constructor(private fb: FormBuilder,
-              private userService: UsersService) {
-    this.form = fb.group({});
-    this.form.addControl('daybook', this.fb.control(false));
-    this.form.addControl('shower', this.fb.control(false));
-    this.form.addControl('homework', this.fb.control(false));
-    this.form.addControl('words', this.fb.control(false));
-    this.form.addControl('teeth', this.fb.control(false));
-    this.form.addControl('drink', this.fb.control(false));
-    this.form.addControl('sleep', this.fb.control(false));
+              private userService: UsersService,
+              private paramsService: ParamsService) {
 
-    this.dayMaxScore = Object.keys(this.form.controls).length;
+    this.form = fb.group({});
   }
 
   ngOnInit() {
+    this.paramsService.findDailyTasks()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(dailyTasks => {
+        this.dailyTasks = dailyTasks;
+        dailyTasks.forEach(task => {
+          this.form.addControl(task.name, this.fb.control(false));
+        });
+    });
+
     this.userService.currentUser()
       .map(user => user.uid)
       .do(userId => this.userId = userId)
@@ -48,18 +51,10 @@ export class MyDayComponent implements OnInit, OnDestroy {
         if (dayItem) {
           this.dayItem = dayItem;
           this.score = dayItem.score;
-
-          const options = {emitEvent: false};
-          this.form.get('daybook').setValue(this._checked('daybook'), options);
-          this.form.get('shower').setValue(this._checked('shower'), options);
-          this.form.get('homework').setValue(this._checked('homework'), options);
-          this.form.get('words').setValue(this._checked('words'), options);
-          this.form.get('teeth').setValue(this._checked('teeth'), options);
-          this.form.get('drink').setValue(this._checked('drink'), options);
-          this.form.get('sleep').setValue(this._checked('sleep'), options);
+          this.dailyTasks.forEach(task => {
+            this.form.get(task.name).setValue(this._checked(task.name), {emitEvent: false});
+          });
         }
-
-        this.checkIfHappy();
 
         this.userService.totalUserPoints(this.userId)
           .takeUntil(this.ngUnsubscribe)
@@ -69,28 +64,16 @@ export class MyDayComponent implements OnInit, OnDestroy {
     this.form.valueChanges
       .takeUntil(this.ngUnsubscribe)
       .subscribe(values => {
-        const selectedItems = Object.keys(values).map(checkboxKey => {
-          return {key: checkboxKey, value: values[checkboxKey]};
-        }).filter(item => item.value);
-
-        this.score = selectedItems.length;
-        if (this.score === this.dayMaxScore) {
-          this.score++;
-        }
-        this.checkIfHappy();
-        this.userService.addUserDayItem(this.userId, {score: this.score, archived: false, items: selectedItems.map(item => item.key)});
+        this.score = 0;
+        const selectedItems = Object.keys(values).filter(checkboxKey => values[checkboxKey]);
+        selectedItems.forEach(selected => {
+          this.score += this.dailyTasks.find(task => task.name === selected).value;
+        });
+        this.userService.addUserDayItem(this.userId, {score: this.score, archived: false, items: selectedItems});
       });
 
     this.clock = Observable.interval(1000).map(tick => new Date()).share();
 
-  }
-
-  private checkIfHappy() {
-    if (this.score >= this.dayMaxScore) {
-      this.happy = true;
-    } else {
-      this.happy = false;
-    }
   }
 
   ngOnDestroy() {
