@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/combineLatest';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {UsersService} from '../../service/users.service';
 import DayItem from '../../model/day-item.class';
@@ -23,7 +24,7 @@ export class MyDayComponent implements OnInit, OnDestroy {
   form: FormGroup;
   score: number = 0;
   total: number;
-  dailyTasks: DailyTask[];
+  dailyTasks: DailyTask[] = [];
 
   constructor(private fb: FormBuilder,
               private userService: UsersService,
@@ -47,11 +48,12 @@ export class MyDayComponent implements OnInit, OnDestroy {
       .do(userId => this.userId = userId)
       .mergeMap(userId => this.userService.loadDayItemFromUser(userId))
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(dayItem => {
+      .combineLatest(this.paramsService.findDailyTasks())
+      .subscribe(([dayItem, dailyTasks]) => {
         if (dayItem) {
           this.dayItem = dayItem;
           this.score = dayItem.score;
-          this.dailyTasks.forEach(task => {
+          dailyTasks.forEach(task => {
             this.form.get(task.name).setValue(this._checked(task.name), {emitEvent: false});
           });
         }
